@@ -50,3 +50,14 @@ app.post("/songs", async (req, res) => {
     await fs.promises.writeFile("songs.json", JSON.stringify(songs));
     res.send("Producto eliminado con éxito");
   });
+  
+  app.put("/songs/:id", async (req, res) => {
+    const { id } = req.params;
+    const song = req.body;
+    const songs = JSON.parse(fs.readFileSync("songs.json"));
+    const index = songs.findIndex((p) => p.id == id);
+    songs[index] = song;
+    await fs.promises.writeFile("songs.json", JSON.stringify(songs));
+    res.send("Producto modificado con éxito");
+  });
+  
