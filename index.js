@@ -16,3 +16,29 @@ app.get("/songs", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
+app.post("/songs", async (req, res) => {
+ 
+    if (req.body.titulo == "" || req.body.artista == "" || req.body.tono == "") {
+      console.log("Faltan campos por llenar");
+      res.send("Faltan campos por llenar");
+    } else {
+      const song = req.body;
+      const songs = JSON.parse(fs.readFileSync("songs.json"));
+      songs.push(song);
+      await fs.promises.writeFile(
+        "songs.json",
+        JSON.stringify(songs),
+        function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("The file was written successfully!");
+          }
+        }
+      );
+      console.log("Agregados correctamente");
+      res.send("Producto agregado con éxito!");
+    }
+  });
+  
