@@ -42,3 +42,11 @@ app.post("/songs", async (req, res) => {
     }
   });
   
+  app.delete("/songs/:id", async (req, res) => {
+    const { id } = req.params;
+    const songs = JSON.parse(fs.readFileSync("songs.json"));
+    const index = songs.findIndex((p) => p.id == id);
+    songs.splice(index, 1);
+    await fs.promises.writeFile("songs.json", JSON.stringify(songs));
+    res.send("Producto eliminado con éxito");
+  });
